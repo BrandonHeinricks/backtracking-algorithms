@@ -33,20 +33,6 @@ public class Documents {
         return false;
     }
 
-    public static void main(String[] args) {
-        System.out.println("******EJEMPLO-BASICO-TODAS-LAS-SOLUCIONES******");
-        char[] opciones = {'A', 'B', 'C', 'D'};
-        generar(new ArrayList<>(), opciones, 3);
-
-        System.out.println("\n\n\n******EJEMPLO-BASICO-UNICA-SOLUCION******");
-        List<String> camino = new ArrayList<>();
-        generarPrimera(camino, opciones, 3);
-
-        System.out.println("\n\n\n******EJEMPLO-BASICO-UNICA-SOLUCION-CONDICION******");
-        generarPrimeraConCondicion(new ArrayList<>(), opciones, 3);
-    }
-
-
     public static boolean generarPrimeraConCondicion(List<String> camino, char[] letras, int longitudObjetivo) {
         if (camino.size() == longitudObjetivo) {
             System.out.println("Primera solución con condicion encontrada: " + camino);
@@ -63,5 +49,31 @@ public class Documents {
             }
         }
         return false;
+    }
+
+
+
+    public static List<List<Integer>> nQueens (int n){
+        List<List<Integer>> resultado = new ArrayList<>();
+        nQueensAux(n,0,new ArrayList<Integer>(),resultado);
+        return resultado;
+    }
+    public static void nQueensAux(int n, int fila,List<Integer> estado, List<List<Integer>> resultado){
+        if(fila == n){
+            resultado.add(new ArrayList<>(estado));
+        }else{
+            for(int columnas = 0; columnas < n; columnas++){
+                estado.add(columnas);
+                if(esValido(estado)){
+                    nQueensAux(n,fila+1, estado,resultado);
+                }
+                estado.remove(estado.size()-1);
+            }
+        }
+    }
+
+    public static boolean esValido(List<Integer> estado){
+        //Logica para validar si se permite la reina nueva, no implementada.
+        return true;
     }
 }
