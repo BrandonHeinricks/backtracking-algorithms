@@ -76,4 +76,61 @@ public class Documents {
         //Logica para validar si se permite la reina nueva, no implementada.
         return true;
     }
+
+    /*
+     bucarCombinaciones dentro de una lista que generen sumando el valor numerico de un target(valor de entrada)
+     */
+
+    public static List<Integer> buscarCombinacion(int[] array, int target){
+        List<Integer> state = new ArrayList<>();
+         if(buscarCombinacionAux(array, target, 0, state)){
+             return state;
+         }
+         return new ArrayList<>();
+    }
+    private static boolean buscarCombinacionAux(int[] array, int objetivoRestante, int inicio, List<Integer> estado){
+        if(objetivoRestante == 0){
+            return true;
+        }else{
+            for(int i = inicio; i<array.length; i++){
+                int num = array[i];
+                if(num > objetivoRestante){
+                    continue;
+                }
+                estado.add(num);
+                if(buscarCombinacionAux(array, objetivoRestante-num,i,estado)){
+                    return true;
+                }
+                estado.remove(estado.size()-1);
+            }
+            return false;
+        }
+    }
+
+
+
+
+    public static List<List<Integer>> buscarCombinaciones(int[] array, int target){
+        List<List<Integer>> result = new ArrayList<>();
+        List<Integer> state = new ArrayList<>();
+        buscarCombinacionesAux(array, target, 0,state, result);
+        return result;
+    }
+
+    public static void buscarCombinacionesAux(int[] array, int target, int start, List<Integer> state, List<List<Integer>> result){
+        if(target == 0){
+            result.add(new ArrayList<>(state));
+            return;
+        }else{
+            for(int i = start; i< array.length; i++){
+                if(array[i] > target){
+                    continue;
+                }else{
+                    state.add(array[i]);
+                    buscarCombinacionesAux(array,target-array[i], i,state,result);
+                    state.remove(state.size()-1);
+                }
+            }
+        }
+    }
 }
