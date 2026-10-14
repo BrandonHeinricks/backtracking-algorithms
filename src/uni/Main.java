@@ -35,6 +35,12 @@ public class Main {
         //TODAS LAS SOLUCIONES PSOIBLES
         List<List<Integer>> todasLasSoluciones = buscarCombinaciones(candidatos, target);
         System.out.println("Todas las soluciones: " + todasLasSoluciones);
+
+
+        System.out.println("\n\n\n******EJEMPLO-RELLENAR-TABLERO-REINAS******");
+        int n = 4;
+        List<List<Integer>> soluciones = nQueens(n);
+        System.out.println(soluciones);
     }
 
 }

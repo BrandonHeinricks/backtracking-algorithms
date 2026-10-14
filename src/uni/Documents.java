@@ -72,8 +72,18 @@ public class Documents {
         }
     }
 
-    public static boolean esValido(List<Integer> estado){
-        //Logica para validar si se permite la reina nueva, no implementada.
+    private static boolean esValido(List<Integer> estado) {
+        int filaActual = estado.size() - 1;
+        int colActual = estado.get(filaActual);
+        for (int filaPrevia = 0; filaPrevia < filaActual; filaPrevia++) {
+            int colPrevia = estado.get(filaPrevia);
+            if (colActual == colPrevia) {
+                return false;
+            }
+            if (Math.abs(filaActual - filaPrevia) == Math.abs(colActual - colPrevia)) {
+                return false;
+            }
+        }
         return true;
     }
 
