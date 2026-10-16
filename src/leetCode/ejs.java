@@ -152,5 +152,37 @@ public class ejs {
     }
 
 
+    /*
+    90.SUBSETS II
+
+    Given an integer array nums that may contain duplicates, return all possible subsets (the power set).
+    The solution set must not contain duplicate subsets. Return the solution in any order.
+
+    EXAMPLE 1:
+    Input: nums = [1,2,2]
+    Output: [[],[1],[1,2],[1,2,2],[2],[2,2]]
+
+    EXAMPLE 2:
+    Input: nums = [0]
+    Output: [[],[0]]
+     */
+
+    public List<List<Integer>> subsetsWithDup(int[] nums) {
+        Arrays.sort(nums);
+        List<List<Integer>> solution = new ArrayList<>();
+        subsetsWithDupHelper(nums,0,new ArrayList<>(), solution);
+        return solution;
+    }
+    public void subsetsWithDupHelper(int[] nums, int start, List<Integer> state, List<List<Integer>> solution){
+        solution.add(new ArrayList<>(state));
+        for(int i = start; i< nums.length; i++ ){
+            if(i > start && nums[i] == nums[i-1]){continue;}
+            state.add(nums[i]);
+            subsetsWithDupHelper(nums,i+1, state, solution);
+            state.remove(state.size()-1);
+        }
+    }
+
+
 
 }
