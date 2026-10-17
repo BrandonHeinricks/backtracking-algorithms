@@ -183,6 +183,46 @@ public class ejs {
         }
     }
 
+    /*
+    47. PERMUTATIONS-II
+    Given a collection of numbers, nums, that might contain duplicates, return all possible unique permutations in any order.
+    EXAMPLE 1:
+    Input: nums = [1,1,2]
+    Output:
+    [[1,1,2],[1,2,1],[2,1,1]]
+
+    EXAMPLE 2:
+    Input: nums = [1,2,3]
+    Output: [[1,2,3],[1,3,2],[2,1,3],[2,3,1],[3,1,2],[3,2,1]]
+     */
+
+    public List<List<Integer>> permuteUnique(int[] nums) {
+        Arrays.sort(nums);
+        List<List<Integer>> solution = new ArrayList<>();
+        boolean[] used = new boolean[nums.length];
+        permuteUniqueHelper(nums, used, new ArrayList<>(), solution);
+        return solution;
+    }
+
+    public void permuteUniqueHelper(int[] nums, boolean[] used, List<Integer> state, List<List<Integer>> solution) {
+        if (state.size() == nums.length) {
+            solution.add(new ArrayList<>(state));
+            return;
+        }
+        for (int i = 0; i < nums.length; i++) {
+            if (used[i]) {
+                continue;
+            }if (i > 0 && nums[i] == nums[i - 1] && !used[i - 1]) {
+                continue;
+            }
+            used[i] = true;
+            state.add(nums[i]);
+            permuteUniqueHelper(nums, used, state, solution);
+            state.remove(state.size() - 1);
+            used[i] = false;
+        }
+    }
+
 
 
 }
