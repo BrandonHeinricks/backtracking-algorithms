@@ -267,4 +267,63 @@ public class ejs {
         }
     }
 
+    /*
+    17.LETTER-COMBINATIONS-PHONE-NUMBER
+    Given a string containing digits from 2-9 inclusive, return all possible letter combinations that the number could represent. Return the answer in any order.
+    A mapping of digits to letters (just like on the telephone buttons) is given below. Note that 1 does not map to any letters.
+
+    +---------+---------+---------+
+    |  1      |  2 abc  |  3 def  |
+    +---------+---------+---------+
+    |  4 ghi  |  5 jkl  |  6 mno  |
+    +---------+---------+---------+
+    |  7 pqrs |  8 tuv  |  9 wxyz |
+    +---------+---------+---------+
+    |  * +    |  0 _    |  #      |
+    +---------+---------+---------+
+
+
+    EXAMPLE 1:
+    Input: digits = "23"
+    Output: ["ad","ae","af","bd","be","bf","cd","ce","cf"]
+
+    EXAMPLE 2:
+    Input: digits = "2"
+    Output: ["a","b","c"]
+     */
+
+
+
+    public List<String> letterCombinations(String digits) {
+        if(digits.isEmpty()){return new ArrayList<>();}
+        String[] map = {"", "", "abc", "def", "ghi", "jkl", "mno", "pqrs", "tuv", "wxyz"};
+        int digitsNum = digits.length();
+        List<List<Character>> numberLists = new ArrayList<>();
+        for(int i = 0; i < digitsNum; i++){
+            List<Character> list = new ArrayList<>();
+            int digit = digits.charAt(i)-'0';
+            String letters = map[digit];
+            for(int j = 0; j < letters.length(); j++){
+                list.add(letters.charAt(j));
+            }
+            numberLists.add(list);
+        }
+        List<String> solution = new ArrayList<>();
+        letterCombinationsHelper(numberLists,0,new ArrayList<>(),solution);
+        return solution;
+    }
+    public void letterCombinationsHelper(List<List<Character>> numberLists, int start, List<String> state, List<String> solution){
+        if(start == numberLists.size()){
+            solution.add(String.join("", state));
+            return;
+        }else{
+            List<Character> currentList = numberLists.get(start);
+            for(int i = 0; i < currentList.size(); i++){
+                state.add(String.valueOf(currentList.get(i)));
+                letterCombinationsHelper(numberLists, start+1,state, solution);
+                state.remove(state.size()-1);
+            }
+        }
+    }
+
 }
