@@ -326,4 +326,33 @@ public class ejs {
         }
     }
 
+
+    /*
+    Enunciado: Dado un conjunto de números enteros y un valor entero $N$, determinar si existe un subconjunto cuya suma sea exactamente igual a $N$
+     */
+
+
+    public static boolean existeSubconjunto(int[] array, int N){
+        int[] state = new int[N];
+        return existeSubconjuntoHelper(array,N,0,estado);
+
+    }
+    private static boolean existeSubconjuntoHelper(int[] array, int N, int start, int[] state ){
+        if(N == 0){
+            return true;
+        }else{
+            for(int i = start; i < array.length; i++){
+                int elemento = array[i];
+                if(elemento > N){continue;
+                }state[i] = elemento;
+                if(existeSubconjuntoHelper(array,N-elemento, start+1,state)){
+                    return true;
+                }
+            }
+            return false;
+        }
+    }
+
+
+
 }
