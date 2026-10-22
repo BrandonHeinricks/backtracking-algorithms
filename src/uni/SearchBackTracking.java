@@ -1,6 +1,6 @@
 package uni;
 
-public class PastPapers {
+public class SearchBackTracking {
 
     public boolean existeSubconjunto(int[] array, int target) {
         Booleano solution = new Booleano(false);
