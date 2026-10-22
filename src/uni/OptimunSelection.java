@@ -68,7 +68,7 @@ public class OptimunSelection {
         for(int i = start; i < costes.length; i++){
             int coste = costes[i];
             int memoria = memorias[i];
-            if(coste > presupuestoMax || costeActual + costes >= mejorCoste){continue;}
+            if(coste > presupuestoMax || costeActual + coste >= mejorCoste[0]){continue;}
             costeActual += coste;
             memoriaActual += memoria;
             calcularMenorCosteHelper(costes, memorias, presupuestoMax-coste, memoriaMinima, i+1, costeActual, memoriaActual, mejorCoste);
