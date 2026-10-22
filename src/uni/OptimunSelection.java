@@ -38,4 +38,42 @@ public class OptimunSelection {
     }
 
 
+
+    /*
+
+    Problema: El Menor Coste de Despliegue
+
+     Una empresa de software debe desplegar un conjunto de microservicios. Se dispone de dos vectores
+     de enteros de tamaño n: costes (el precio en euros de desplegar cada microservicio) y memoria
+     (los gigabytes de RAM que consume cada uno).
+
+    Se cuenta con un presupuesto estricto de dinero máximo disponible (presupuestoMax) y se exige que
+    la suma total de memoria RAM de los servicios seleccionados alcance obligatoriamente un rendimiento
+    mínimo (memoriaMinima).
+
+    Implementar un algoritmo basado en el esquema de Selección Óptima (minimización) que determine cuál
+     es el menor coste total necesario para realizar el despliegue cumpliendo ambas restricciones.
+     Si no es posible encontrar ninguna combinación válida, el método debe retornar -1.
+     */
+
+    public int calcularMenorCoste(int[] costes, int[] memoria, int presupuestoMax, int memoriaMinima){
+        int[] mejorCoste = new int[]{Integer.MAX_VALUE};
+        calcularMenorCosteHelper(costes,memoria,presupuestoMax,memoriaMinima,0,0,0,mejorCoste);
+        return mejorCoste[0] == Integer.MAX_VALUE ? -1 : mejorCoste[0];
+    }
+    public static void calcularMenorCosteHelper(int[] costes, int[] memorias, int presupuestoMax, int memoriaMinima,int start,int costeActual,int memoriaActual,int[] mejorCoste){
+        if(costeActual < mejorCoste[0] && memoriaActual >= memoriaMinima){
+            mejorCoste[0] = costeActual;
+        }
+        for(int i = start; i < costes.length; i++){
+            int coste = costes[i];
+            int memoria = memorias[i];
+            if(coste > presupuestoMax || costeActual + costes >= mejorCoste){continue;}
+            costeActual += coste;
+            memoriaActual += memoria;
+            calcularMenorCosteHelper(costes, memorias, presupuestoMax-coste, memoriaMinima, i+1, costeActual, memoriaActual, mejorCoste);
+            costeActual -= coste;
+            memoriaActual -= memoria;
+        }
+    }
 }
