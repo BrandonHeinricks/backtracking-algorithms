@@ -334,7 +334,7 @@ public class ejs {
 
     public static boolean existeSubconjunto(int[] array, int N){
         int[] state = new int[N];
-        return existeSubconjuntoHelper(array,N,0,estado);
+        return existeSubconjuntoHelper(array,N,0,state);
 
     }
     private static boolean existeSubconjuntoHelper(int[] array, int N, int start, int[] state ){
@@ -352,7 +352,4 @@ public class ejs {
             return false;
         }
     }
-
-
-
 }
