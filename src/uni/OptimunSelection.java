@@ -76,4 +76,49 @@ public class OptimunSelection {
             memoriaActual -= memoria;
         }
     }
+
+
+
+
+    /*
+    EXAMEN 27 OCTUBRE 2025
+    Dado un conjunto de ejercicios gimnásticos de los que
+    disponemos del tiempo necesario para realizarlos (medido en minutos) y de las unidades
+    de esfuerzo que consume su realización, queremos buscar el subconjunto de ejercicios
+    que puedan realizarse en un tiempo total exacto de T (minutos) que minimicen las
+    unidades totales de esfuerzo consumidas al realizarlos.
+
+
+     */
+
+    public static boolean[] minEsfuerzoEnT(int[] tiempo, int[] esfuerzo, int T){
+        int n = tiempo.length;
+        boolean[] solucion = new boolean[n];
+        int[] mejorEsfuerzo = new int[]{Integer.MAX_VALUE};
+        minEsfuerzoEnTHelper(tiempo,esfuerzo,T,0,0,0,mejorEsfuerzo,new boolean[n],solucion);
+        return solucion;
+    }
+    public static void minEsfuerzoEnTHelper(int[] tiempo, int[] esfuerzo, int T, int start, int tiempoActual, int esfuerzoActual,int[] mejorEsfuerzo,boolean[] estado, boolean[] solucion){
+        if(tiempoActual == T){
+            if( esfuerzoActual < mejorEsfuerzo[0]) {
+                mejorEsfuerzo[0] = esfuerzoActual;
+                for (int i = 0; i < estado.length; i++) {
+                    solucion[i] = estado[i];
+                }
+            }return;
+        }
+        for(int i = start; i < tiempo.length; i++){
+            int t = tiempo[i];
+            int e = esfuerzo[i];
+            if(tiempoActual + t > T || esfuerzoActual + e > mejorEsfuerzo[0]){continue;}
+            tiempoActual += t;
+            esfuerzoActual += e;
+            estado[i] = true;
+            minEsfuerzoEnTHelper(tiempo,esfuerzo,T,i+1,tiempoActual,esfuerzoActual,mejorEsfuerzo,estado,solucion);
+            tiempoActual -= t;
+            esfuerzoActual -= e;
+            estado[i] = false;
+        }
+
+    }
 }
