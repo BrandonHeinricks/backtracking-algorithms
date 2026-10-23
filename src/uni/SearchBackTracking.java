@@ -1,4 +1,5 @@
 package uni;
+import java.util.*;
 
 public class SearchBackTracking {
 
@@ -13,7 +14,7 @@ public class SearchBackTracking {
         }else if(!solution.getValor() ){
             for(int i = start; i < array.length; i++){
                 int n = array[i];
-                if(sumaEsado + n > target){continue;}
+                if(sumaEstado + n > target){continue;}
                 sumaEstado += n;
                 existeSubconjuntoHelper(array,target,i+1,sumaEstado,solution);
                 sumaEstado -= n;
@@ -38,16 +39,47 @@ public class SearchBackTracking {
         return solucion.getValor();
     }
     public void esValidaSecuenciaHelper(int[] valores, int objetivo, int inicio, List<Integer> estado, Booleano solucion){
-        if(objetivo == 0 && (estado.length % 2) == 0){
+        if(objetivo == 0 && (estado.size() % 2) == 0){
             solucion.setValor(true);
         }else if(!solucion.getValor()){
-            for(int i = start; i < valores.length && !solucion.getValor(); i++){
-                int elemento = array[i];
+            for(int i = inicio; i < valores.length && !solucion.getValor(); i++){
+                int elemento = valores[i];
                 if(elemento > objetivo){continue;}
                 estado.add(elemento);
                 esValidaSecuenciaHelper(valores, objetivo-elemento, i+2,estado, solucion);
                 if(!solucion.getValor()){
-                    estado.remove(estado.length-1);
+                    estado.remove(estado.size()-1);
+                }
+            }
+        }
+    }
+
+    /*
+    5-DICIEMBRE-2020
+    Problema. Dado un vector, v, que contiene los valores de un conjunto de elementos, se
+    desea comprobar si existen dos subconjuntos de elementos tal que la suma de valores de
+    cada subconjunto sea exactamente igual a un valor predeterminado vObjetivo
+     */
+    public static boolean dosSubconjuntos(int[] v, int objetivo){
+        Booleano solucion = new Booleano(false);
+        dosSubconjuntosHelper(v,objetivo,0,0,0,solucion);
+        return solucion.getValor();
+    }
+    public static void dosSubconjuntosHelper(int[] v,int objetivo, int start, int suma1, int suma2, Booleano solucion){
+        if(suma1 == objetivo && suma2 == objetivo){
+            solucion.setValor(true);
+        }else{
+            for(int i = start; i < v.length && !solucion.getValor(); i++){
+                int elemento = v[i];
+                if(suma1 + elemento <= objetivo){
+                    suma1 += elemento;
+                    dosSubconjuntosHelper(v, objetivo, i+1,suma1, suma2, solucion);
+                    suma1 -= elemento;
+                }
+                if(!solucion.getValor() && suma2 + elemento <= objetivo){
+                    suma2 += elemento;
+                    dosSubconjuntosHelper(v, objetivo, i+1,suma1, suma2, solucion);
+                    suma2 -= elemento
                 }
             }
         }

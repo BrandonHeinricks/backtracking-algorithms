@@ -119,6 +119,14 @@ public class OptimunSelection {
             esfuerzoActual -= e;
             estado[i] = false;
         }
-
     }
+
+
+
+
+
+
+
+
+
 }
