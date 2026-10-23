@@ -86,6 +86,7 @@ public class SearchBackTracking {
     }
 
     /*
+    28-OCTUBRE-2024
     Disponemos de una cantidad concreta de varios tipos de
     tuberías, cada tipo de una longitud exacta. Queremos comprobar si existe una
     combinación de estas tuberías que ensambladas consigan una longitud total Ltotal.
@@ -112,5 +113,49 @@ public class SearchBackTracking {
                 }
             }
         }
+    }
+
+
+    /*
+    28-JUNIO-2018
+    Se pide:
+    Implementar un algoritmo en Java, basado en el esquema de backtracking, que
+    permita determinar si existe un reparto equitativo de los bienes entre los tres
+    herederos. Deberá implementarse el código de la función hayRepartoEquitativo,
+    así como todos los métodos adicionales que se consideren necesarios.
+     */
+    public static boolean hayRepartoEquitativo(int[] bienes){
+        int[] estado = new Array[3];
+        Booleano solucion = new Booleano(false);
+        hayRepartoEquitativoHelper(bienes,0,estado,solucion);
+        return solucion.getValor();
+    }
+    public static void hayRepartoEquitativoHelper(int[] bienes, int start, int[] estado, Booleano solucion){
+        if(start == bienes.length){
+            if(esEquitativo(estado)){
+                solucion.setValor(true);
+        }
+        }else if(!solucion.getValor()){
+            int elemento = bienes[start];
+            int k = 0;
+            while(k < estado.length && !solucion.getValor()){
+                estado[k] += elemento;
+                hayRepartoEquitativoHelper(bienes, start+1, estado,solucion);
+                estado[k] -= elemento;
+                k++;
+            }
+        }
+    }
+
+    public static boolean esEquitativo(int[] lista){
+        boolean sol = true;
+        int k = lista.length;
+        while(k > 0){
+            if(lista[k] != lista[k-1]){
+                sol = false;
+            }
+            k--;
+        }
+        return sol;
     }
 }
