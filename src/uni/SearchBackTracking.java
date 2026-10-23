@@ -79,7 +79,36 @@ public class SearchBackTracking {
                 if(!solucion.getValor() && suma2 + elemento <= objetivo){
                     suma2 += elemento;
                     dosSubconjuntosHelper(v, objetivo, i+1,suma1, suma2, solucion);
-                    suma2 -= elemento
+                    suma2 -= elemento;
+                }
+            }
+        }
+    }
+
+    /*
+    Disponemos de una cantidad concreta de varios tipos de
+    tuberías, cada tipo de una longitud exacta. Queremos comprobar si existe una
+    combinación de estas tuberías que ensambladas consigan una longitud total Ltotal.
+    Se pide: implementar un algoritmo en Java con la siguiente cabecera, basado en el
+    esquema de backtracking1,2, que permita determinar si existe una combinación de
+    tuberías cuyo ensamblado consiga una longitud Ltotal
+     */
+    public static boolean hayEnsamblaje(int[] longitud, int[] cantidad, int LTotal){
+        Booleano solucion = new Booleano(false);
+        hayEnsamblajeHelper(longitud, cantidad, LTotal, 0,0, solucion);
+        return solucion.getValor();
+
+    }
+    public static void hayEnsamblajeHelper(int[] longitud, int[] cantidad, int LTotal, int start, int longitudActual, Booleano solucion){
+        if(longitudActual == LTotal){
+            solucion.setValor(true);
+        }else if(!solucion.getValor() && start < longitud.length){
+            int cantidadDisponible = cantidad[start];
+
+            for(int k = 0; k < cantidadDisponible && !solucion.getValor(); k++){
+                int l = longitud[start] * k;
+                if(longitudActual + l <= LTotal){
+                    hayEnsamblajeHelper(longitud, cantidad, LTotal, start+1, longitudActual, solucion);
                 }
             }
         }
