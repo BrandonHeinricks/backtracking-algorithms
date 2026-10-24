@@ -185,4 +185,55 @@ public class OptimunSelection {
             }
         }return sol;
     }
+
+
+
+
+
+    /*
+    26-NOVIEMBRE-2021
+
+    Dado un array de números enteros, se pide obtener el subconjunto de valores
+    del array con mayor número de elementos cuya suma sea igual a 0.
+
+    Valores: [-4, 3, 5, -5, 0, 1, 8, 10, -21]
+    En este ejemplo, el subconjunto de valores del array con mayor número de elementos
+    cuya suma es igual a 0 es el formado por {3, 5, -5, 0, 8, 10, -21} (tiene 7 elementos).
+     */
+
+    public static boolean[] subSuma0MaxElem(int[] array){
+        int n = array.length;
+        int[] maxElem = new int[]{Integer.MIN_VALUE};
+        boolean[] solucion = new boolean[n];
+        boolean[] estado = new boolean[n];
+        subSuma0MaxElem( array, 0,0,0, maxElem, estado, solucion);
+        return solucion;
+    }
+    public static void subSuma0MaxElemHelper(int[] array, int start, int sumaActual,int elemActual, int[] maxElem, boolean[] estado, boolean[] solucion){
+        if(elemActual > maxElem[0] && sumaActual == 0){
+            maxElem[0] = elemActual;
+            for(int i = 0; i < array.length; i++){
+                solucion[i] = estado[i];
+            }
+        }
+        for(int i = start; i < array.length; i++){
+            int elemento = array[i];
+            sumaActual += elemento;
+            estado[i] = true;
+            elemActual ++;
+            subSuma0MaxElemHelper(array, i+1, sumaActual, elemActual, maxElem, estado, solucion);
+            sumaActual -= elemento;
+            estado[i] = false;
+            elemActual --;
+        }
+    }
+
+
+
+
+
+
+
+
+
 }
