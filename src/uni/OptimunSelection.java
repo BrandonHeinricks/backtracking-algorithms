@@ -121,9 +121,68 @@ public class OptimunSelection {
         }
     }
 
+    /*
+    8-NOVIEMBRE-2019
+    Se dispone de una lista de trabajos que tienen asociado un instante de
+    comienzo ci y un instante de finalización fi, donde ci<fi, de forma que cada trabajo
+    debe realizarse durante el periodo [ci,fi). Durante la realización de un trabajo es
+    necesario hacer uso de un recurso único de manera exclusiva, por lo que dos
+    trabajos i, j son compatibles si los intervalos [ci,fi) y [cj,fj) no se superponen. Se
+    quiere obtener el conjunto de trabajos mutuamente compatibles que maximice el
+    tiempo que está en uso el recurso.
 
+    Comienzo: [5, 2, 4, 2, 6, 0, 6, 2]
+    Fin: [9, 4, 5, 5, 7, 3, 8, 5]
 
+    Tiempo:    0 1 2 3 4 5 6 7 8 9
+    -----------------------------------------
+    Trabajo 0:           [=======]     (5 a 9)
+    Trabajo 1:    [====]               (2 a 4)
+    Trabajo 2:        [===]            (4 a 5)
+    Trabajo 3:    [=======]            (2 a 5)
+    Trabajo 4:            [===]        (6 a 7)
+    Trabajo 5:[=====]                  (0 a 3)
+    Trabajo 6:            [===]        (6 a 8)
+    Trabajo 7:    [===]                (2 a 5)
 
+    SOLUCION: Los trabajos compatibles que maximizan el uso del recurso son el 0, el 2 y el 5, que
+    en total hacen uso del recurso durante 8 unidades de tiempo.
+     */
 
-
+    public static boolean[] maxUsoRecurso(int[] comienzo, int[] fin){
+        int n = comienzo.length;
+        int[] maxTiempo = new int[]{Integer.MIN_VALUE};
+        boolean[] solucion = new boolean[n];
+        boolean[] estado = new boolean[n];
+        maxUsoRecursoHelper(comienzo, fin, 0, 0, maxTiempo, estado, solucion);
+        return solucion;
+    }
+    public static void maxUsoRecursoHelper(int[] comienzos, int[] fin, int start,int tiempoActual, int[] maxTiempo, boolean[] estado, boolean[] solucion){
+        if(tiempoActual > maxTiempo[0]){
+            maxTiempo[0] = tiempoActual;
+            for(int i = 0; i < estado.length; i++){
+               solucion[i] = estado[i];
+           }
+        }
+        for(int i = start; i < comienzos.length; i++){
+            int c = comienzos[i];
+            int f = fin[i];
+            if(!esValido(comienzos, fin, estado,i)){continue;}
+            estado[i] = true;
+            tiempoActual += (f-c);
+            maxUsoRecursoHelper(comienzos, fin, i+1, tiempoActual, maxTiempo, estado, solucion);
+            tiempoActual -= (f-c);
+            estado[i] = false;
+        }
+    }
+    public static boolean esValido(int[] comienzos, int[] fines, boolean[] usados, int nuevo){
+        boolean sol = true;
+        for(int i = 0; i < comienzos.length; i++){
+            if(usados[i] == true){
+                if(comienzos[i] < fines[nuevo] && fines[i] > comienzos[nuevo]){
+                    sol = false;
+                }
+            }
+        }return sol;
+    }
 }
