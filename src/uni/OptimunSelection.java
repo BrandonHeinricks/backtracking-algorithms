@@ -206,7 +206,7 @@ public class OptimunSelection {
         int[] maxElem = new int[]{Integer.MIN_VALUE};
         boolean[] solucion = new boolean[n];
         boolean[] estado = new boolean[n];
-        subSuma0MaxElem( array, 0,0,0, maxElem, estado, solucion);
+        subSuma0MaxElemHelper( array, 0,0,0, maxElem, estado, solucion);
         return solucion;
     }
     public static void subSuma0MaxElemHelper(int[] array, int start, int sumaActual,int elemActual, int[] maxElem, boolean[] estado, boolean[] solucion){
@@ -230,6 +230,47 @@ public class OptimunSelection {
 
 
 
+    /*
+    11-NOVIEMBRE-2022
+
+    Problema. Se dispone de dos contenedores, cada uno capaz de soportar un peso máximo,
+    y un conjunto de productos, cada uno con un peso característico. Se pretende distribuir
+    todos los productos entre los dos contenedores de forma que el reparto del peso sea lo
+    más equilibrado posible. Ejemplo: dado un peso máximo de 10 para cada contenedor y
+    el siguiente array de pesos de los productos:
+
+    Valores: [1, 3, 2, 5, 1, 4, 2, 1]
+
+    El reparto más equilibrado distribuye los objetos {0,1,2,4,6,7} en el contenedor 1 (con un
+    peso total de 10) y {3,5} en el contenedor 2 (con un peso total de 9).
+     */
+    public static int[] distribucionCarga2(int[] pesos, int pMax){
+        int[] solucion = new int[2];
+        int[] estado = new int[2];
+        Entero mejorDistribucion = new Entero(Integer.MIN_VALUE);
+        distribucionCarga2Helper(pesos, pMax, 0, mejorDistribucion, estado, solucion);
+        return solucion;
+    }
+    public static void distribucionCarga2Helper(int[] pesos, int pMax, int start, Entero mejorDistribucion, int[] estado, int[] solucion){
+        if(start == pesos.length){
+            int distribucionActual = Math.abs(estado[0] - estado[1]);
+            if(distribucionActual < mejorDistribucion.getValor()){
+                mejorDistribucion.setValor(distribucionActual);
+                for(int i = 0; i< pesos.length; i++){
+                    solucion[i] = estado[i];
+                }
+            }
+        }else{
+            int elemento = pesos[start];
+            for(int i = 0; i < estado.length; i++){
+                if(estado[i] + elemento <= pMax){
+                    estado[i] += elemento;
+                    distribucionCarga2Helper(pesos, pMax, start+1, mejorDistribucion, estado, solucion);
+                    estado[i] -= elemento;
+                }
+            }
+        }
+    }
 
 
 
