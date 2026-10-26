@@ -262,7 +262,7 @@ public class OptimunSelection {
             }
         }else{
             int elemento = pesos[start];
-            for(int i = 0; i < estado.length; i++){
+            for(int i = 0; i < 2; i++){
                 if(estado[i] + elemento <= pMax){
                     estado[i] += elemento;
                     distribucionCarga2Helper(pesos, pMax, start+1, mejorDistribucion, estado, solucion);
@@ -274,7 +274,71 @@ public class OptimunSelection {
 
 
 
+    /*
+    11-ENERO-2024
 
+    Ibai les pide a los alumnos de Algorítmica que le echen una mano diseñando un algoritmo que,
+    dada la lista con los niveles de habilidad de cada streamer, los dividan en k equipos con un grado
+    de desigualdad lo menor posible. La desigualdad se mide como la diferencia entre la habilidad total
+    del equipo más habilidoso menos la habilidad total del equipo menos habilidoso. Ejemplo: dado el
+    siguiente vector de habilidades de los streamers para formar k = 4 equipos:
+
+    vector = [12, 5, 8, 9, 3, 10, 15, 4, 20, 7]
+    la formación del equipo 0 con los streamers de las posiciones {0,1,9} da un nivel total de 24, el
+    equipo 1 con {2,6} da un nivel de 23, el equipo 2 con {3,5,7} da un nivel de 23 y el equipo 3 con
+    {4,8} da un nivel de 23. Por lo tanto, el grado de desigualdad sería 24-23=1. Sin embargo, para
+    k=11 equipos y el vector habilidades anterior, no hay solución pues algún equipo se quedaría vacío.
+     */
+
+    public static int[] equipos(int[] habilidad, int k){
+        if (k > habilidad.length || k <= 0) {
+            return null;
+        }
+
+        int n = habilidad.length;
+        int[] estado = new int[n];
+        int[] solucion = new int[n];
+        int[] sumaEquipos = new int[k];
+        Entero mejorDistribucion = new Entero(Integer.MAX_VALUE);
+        equiposHelper(habilidad, k, 0, sumaEquipos, estado, solucion, mejorDistribucion);
+        if(mejorDistribucion.getValor() != Integer.MAX_VALUE){
+            return solucion;
+        }return null;
+    }
+
+    public static void equiposHelper(int[] habilidad,int k, int start, int[] sumaEquipos, int[] estado, int[] solucion, Entero mejorDistribucion){
+        if(start == habilidad.length){
+            int distribucionActual = calcularDesigualdad(sumaEquipos);
+            if(distribucionActual < mejorDistribucion.getValor()){
+                mejorDistribucion.setValor(distribucionActual);
+                for(int i = 0; i < habilidad.length; i++){
+                    solucion[i] = estado[i];
+                }
+            }
+        }
+        else{
+            for(int i = 0; i < k; i++){
+                estado[start] = i;
+                sumaEquipos[i] += habilidad[start];
+                equiposHelper(habilidad, k, start +1, sumaEquipos, estado, solucion, mejorDistribucion);
+                estado[start] = 0;
+                sumaEquipos[i] -= habilidad[start];
+
+            }
+        }
+    }
+
+
+    private static int calcularDesigualdad(int[] sumaEquipos) {
+        int max = Integer.MIN_VALUE;
+        int min = Integer.MAX_VALUE;
+        for (int i = 0; i < sumaEquipos.length; i++) {
+            if (sumaEquipos[i] == 0) return Integer.MAX_VALUE;
+            if (sumaEquipos[i] > max) max = sumaEquipos[i];
+            if (sumaEquipos[i] < min) min = sumaEquipos[i];
+        }
+        return max - min;
+    }
 
 
 }
