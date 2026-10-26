@@ -125,7 +125,7 @@ public class SearchBackTracking {
     así como todos los métodos adicionales que se consideren necesarios.
      */
     public static boolean hayRepartoEquitativo(int[] bienes){
-        int[] estado = new Array[3];
+        int[] estado = new int[3];
         Booleano solucion = new Booleano(false);
         hayRepartoEquitativoHelper(bienes,0,estado,solucion);
         return solucion.getValor();
@@ -157,5 +157,60 @@ public class SearchBackTracking {
             k--;
         }
         return sol;
+    }
+
+
+
+    /*
+    10-NOVIEMBRE-2023
+
+    La estación de esquí Sweet Snowflake acaba de instalar varios
+    teleféricos1 cuya capacidad en personas (numP) y peso máximo (pMax) varía dependiendo
+    de la instalación. El gerente de la estación quiere optimizar el uso de los teleféricos, de
+    forma que en cada viaje se consiga que un teleférico transporte exactamente numP
+    personas con un peso total exacto de pMax.
+
+    EJEMPLO:
+    dado un teleférico con numP=4,
+    pMax=320 y el siguiente array de pesos de personas que están esperando a subir al
+    teleférico:
+    {45, 80, 52, 90, 67, 60, 90, 84, 33, 28}
+
+    la selección de las personas cuyos pesos están en las posiciones {1,3,5,6} consigue que
+    se trasporten exactamente 4 personas con un peso total de 320 Kg. Sin embargo, dado
+    un teleférico con numP=5, pMax=350 y el array de pesos anterior, no hay ninguna
+    combinación de 5 personas con un peso total de 350Kg
+     */
+
+    public static boolean[] telesferico(int[] pesos, int numP, int pMax){
+        int n = pesos.length;
+        Booleano exito = new Booleano(false);
+        boolean[] solucion = new boolean[n];
+        boolean[] estado = new boolean[n];
+        telesfericoHelper(pesos, numP, pMax, 0, 0, 0, estado, solucion, exito);
+        if(exito.getValor()){
+            return solucion;
+        }return null;
+    }
+    public static void telesfericoHelper(int[] pesos, int numP, int pMax, int start, int pesoActual, int personasActuales, boolean[] estado, boolean[] solucion, Booleano exito){
+        if(personasActuales == numP){
+            exito.setValor(true);
+            for(int i = 0; i < pesos.length; i++){
+                solucion[i] = estado[i];
+            }
+        }else if(personasActuales < numP){
+            for(int i = start; i < pesos.length && !exito.getValor(); i++){
+                int elemento = pesos[i];
+                if(elemento + pesoActual > pMax){continue;}
+                pesoActual += elemento;
+                estado[i] = true;
+                personasActuales ++;
+                telesfericoHelper(pesos, numP, pMax, i+1, pesoActual, personasActuales, estado, solucion, exito);
+                pesoActual -= elemento;
+                estado[i] = false;
+                personasActuales --;
+
+            }
+        }
     }
 }
