@@ -341,4 +341,62 @@ public class OptimunSelection {
     }
 
 
+
+    /*
+    La empresa Arasaka S.A. frecuentemente recibe
+    solicitudes de traslado de sus empleados. Una solicitud tiene un edificio de
+    origen y un edificio de destino. Los edificios de Arasaka tienen un identificador
+    numérico que comienza en 0 y acaba en (N-1), siendo N el total de edificios de la
+    corporación. Sin embargo, hay una complicación: todos los edificios de la
+    corporación ya están a su máxima capacidad. Por ejemplo, para aceptar una
+    petición de traslado al edificio 0, se debe aprobar una petición con origen en el
+    edificio 0. La empresa desea aprobar el mayor número de peticiones posibles.
+
+    EJEMPLO: Consideramos que N=3 y Arasaka ha recibido 5 peticiones.
+
+        Petición: [A, B, C, D, E]
+        Origen:   [0, 2, 2, 1, 2]
+        Destino:  [1, 1, 0, 2, 0]
+
+        Dadas las restricciones del problema, si aceptamos A, D y E, tendríamos 3 peticiones
+        aceptadas, que es el máximo posible dadas las restricciones del problema.
+     */
+
+    public static int maxPeticiones(int N, int[] origen, int[] destino){
+        Entero mejorAceptadas = new Entero(0);
+        boolean[] estado = new boolean[origen.length];
+        maxPeticionesHelper(N, origen, destino, 0, 0, estado, mejorAceptadas);
+        return mejorAceptadas.getValor();
+
+    }
+    public static void maxPeticionesHelper(int N, int[] origen, int[] destino, int start,int aceptadasActual, boolean[] estado, Entero mejorAceptadas){
+        if(aceptadasActual > mejorAceptadas.getValor()){
+            if(intercambiosValidos(N, origen, destino, estado)){
+                    mejorAceptadas.setValor(aceptadasActual);
+            }
+        }
+        for(int k = start; k < origen.length; k++){
+            estado[k] = true;
+            aceptadasActual++;
+            maxPeticionesHelper(N, origen, destino, k + 1, aceptadasActual, estado, mejorAceptadas);
+            estado[k] = false;
+            aceptadasActual--;
+        }
+
+    }
+    public static boolean intercambiosValidos(int N, int[] origen, int[] destino, boolean[] estado) {
+        int[] balance = new int[N];
+        for (int i = 0; i < estado.length; i++) {
+            if (estado[i]) {
+                balance[origen[i]]--;
+                balance[destino[i]]++;
+            }
+        }
+        for (int e = 0; e < N; e++) {
+            if (balance[e] != 0) {
+                return false;
+            }
+        }
+        return true;
+    }
 }
